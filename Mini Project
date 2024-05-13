@@ -1,0 +1,169 @@
+//-------DEC20012 –PROGRAMMING FUNDAMENTAL-(DTK2B(S6)----------
+//Name and No Matrix:ADAM HARRIS BIN SAMSUl
+//                  (17DTK23F1022)
+//                  PUTERI NURSARA BINTI MOHD JASMANI
+//                  (17DTK23F1026)
+//                  MUHAMMAD HARZAN AKWA BIN MOHAMMED HANI
+//                  (17DTK23F1023)
+//-----------------------------------------------------------
+//Title:MINI PROJECT-HOTEL CHECKING Management----------------------
+#include <stdio.h>
+
+//Constants
+#define MAX_ROOMS 10
+#define MAX_NAME_LENGTH 50
+
+// Global variables
+int roomNumbers[MAX_ROOMS];           // Array to store room numbers
+int occupied[MAX_ROOMS] = {0};        // Array to store occupancy status (0 for not occupied, 1 for occupied)
+char guestNames[MAX_ROOMS][MAX_NAME_LENGTH];  // Array to store guest names
+
+// Function to initialize the hotel rooms
+void initializeHotel() {
+    // Initialize room numbers
+    int i;
+    for (i = 0; i < MAX_ROOMS; i++) {
+        roomNumbers[i] = i + 1;  // Assign room numbers starting from 1
+    }
+}
+
+// Function to display room occupancy status
+void displayRooms() {
+    printf("Room Number\tOccupied\tGuest Name\n");
+    int i;
+    for (i = 0; i < MAX_ROOMS; i++) {
+        printf("%d\t\t%s\t\t%s\n", roomNumbers[i],
+               occupied[i] ? "Yes" : "No",
+               occupied[i] ? guestNames[i] : "N/A");
+    }
+}
+
+// Function for guest check-in
+void checkIn() {
+
+    int roomNumber;
+    int inputStatus;
+
+    // Prompt the user to enter a room number
+    printf("Enter room number: ");
+
+    // Read user input and check if it's a number
+    inputStatus = scanf("%d", &roomNumber);
+
+    // Check if scanf successfully assigned the input to the variable
+    if (inputStatus == 1) {
+        // Input is a valid number
+        if (roomNumber < 1 || roomNumber > MAX_ROOMS) {
+            printf("Invalid room number. Please enter a number between 1 and %d.\n", MAX_ROOMS);
+            return;
+        } else {
+            printf("Room number entered: %d\n", roomNumber);
+            // Proceed with further processing
+        }
+    } 
+   
+	else {
+        // Input is not a number
+        printf("Invalid input. Please enter a valid room number.\n");
+        // Clear input buffer to avoid infinite loop
+        while (getchar() != '\n');
+        return ;
+    }
+    
+    // Check if the room is already occupied
+    if (occupied[roomNumber - 1]) {
+        printf("Room %d is already occupied.\n", roomNumber);
+        return;
+    }
+
+    //Prompt the user to enter guest name
+    printf("Enter guest name: ");
+    scanf("%s", guestNames[roomNumber - 1]);  // Read guest name directly into the array
+    occupied[roomNumber - 1] = 1;  // Mark the room as occupied
+
+    printf("Checked in successfully.\n");
+}
+
+// Function for guest check-out
+void checkOut() {
+    int roomNumber;
+
+    printf("Enter room number: ");
+    scanf("%d", &roomNumber);
+
+    if (roomNumber < 1 || roomNumber > MAX_ROOMS) {
+        printf("Invalid room number.\n");
+        return;
+    }
+
+    // Check if the room is not occupied
+    if (!occupied[roomNumber - 1]) {
+        printf("Room %d is not occupied.\n", roomNumber);
+        return;
+    }
+
+    occupied[roomNumber - 1] = 0;  // Mark the room as unoccupied
+    guestNames[roomNumber - 1][0] = '\0';  // Clear the guest name
+    printf("Checked out successfully.\n");
+}
+
+// Main function
+int main() {
+    
+       char input[100]; // Assuming the input will be less than 100 characters
+
+     // Display welcome message
+    printf("                                   l----------------------------------l\n");
+    printf("                                   |----------------------------------|\n");
+    printf("                                   |------     Welcome To       ------|\n");
+    printf("                                   |------ HarzanFamily Hotel   ------|\n");
+    printf("                                   |------  Managment System    ------|\n");
+    printf("                                   |----------------------------------|\n");
+    printf("                                   l----------------------------------l\n");
+    sleep(1);
+    printf("System loading please wait*\n");
+    sleep(5);
+    printf("\n Done type anything to proceed: ");
+    scanf("%s", input); // Read input from the user
+    
+    // Initialize hotel rooms
+	initializeHotel();
+
+
+    int choice;
+    
+    // Main menu loop
+ do {
+ 	 // Display menu options
+    printf("\nHotel HarzanFAMILY Berhad Management System\n");
+    printf("1. Display Rooms\n");
+    printf("2. Check In\n");
+    printf("3. Check Out\n");
+    printf("4. Exit\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
+    
+    // Execute the selected option
+    switch (choice) {
+        case 1:
+            displayRooms();
+            break;
+        case 2:
+            checkIn();
+            break;
+        case 3:
+            checkOut();
+            break;
+        case 4:
+            printf("Exiting...\n");
+            break;
+        default:
+            printf("Invalid choice. Please enter again.\n");
+    }
+    getchar(); // Consume newline character from input buffer
+} while (choice != 4); // Repeat until the user chooses to exit
+
+
+
+    return 0;
+}
